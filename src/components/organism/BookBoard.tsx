@@ -25,12 +25,12 @@ const BookBoard: React.FC<Props> = props => {
     description: '이 책은 타입스크립트을 이해하는 데 좋습니다',
   };
   return (
-    <Box as="main">
+    <Box as="main" w={'calc(100%-73px)'} overflowX="hidden">
       <Box as="header" flexGrow={1}>
         <Text as="h1">둘러보기</Text>
       </Box>
       <Flex wrap="nowrap" as="ul" overflowX="scroll">
-        {Array(8)
+        {Array(6)
           .fill(null)
           .map(_ => (
             <BookCard>

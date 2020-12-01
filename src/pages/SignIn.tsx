@@ -21,7 +21,7 @@ const SignIn: React.FC<Props> = () => {
   return (
     <Box mt={10}>
       <Container centerContent={true}>
-        <Logo fontSize="220px" colorMode={colorMode} />
+        <Logo fontSize="220px" />
         <Text as="h1" mt={'-30px'}>
           Wilkommen zu{' '}
           <Text d="inline-block" py={4} fontWeight="800" letterSpacing="-2px">
