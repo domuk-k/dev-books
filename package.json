@@ -13,10 +13,12 @@
     "@types/node": "^12.19.7",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
+    "formik": "^2.2.5",
     "framer-motion": "^2.9.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-error-boundary": "^3.0.2",
+    "react-icons": "^4.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "typescript": "^4.1.2",
@@ -43,8 +45,7 @@
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "browserslist": {
