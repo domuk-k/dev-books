@@ -1,24 +1,32 @@
-import { Container, Button, Box, Image, Text, HStack } from '@chakra-ui/react';
+import {
+  Container,
+  Button,
+  Box,
+  Image,
+  Text,
+  HStack,
+  useColorMode,
+} from '@chakra-ui/react';
 import { Form, Formik, FormikValues } from 'formik';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SignInField from '../components/Input/SignInField';
-import jumpingFox from '../jumpingfox.png';
+import Logo from '../components/atom/Logo';
+import SignInField from '../components/module/SignInField';
+
 interface Props {}
 
 const SignIn: React.FC<Props> = () => {
+  const { colorMode } = useColorMode();
   const initialValues: FormikValues = { email: '', password: '' };
   return (
     <Box mt={10}>
       <Container centerContent={true}>
-        <Image
-          boxSize="230"
-          objectFit="cover"
-          src={jumpingFox}
-          alt="dev-books-logo"
-        />
-        <Text as="h1" py={8}>
-          Login to devBooks
+        <Logo fontSize="220px" colorMode={colorMode} />
+        <Text as="h1" mt={'-30px'}>
+          Wilkommen zu{' '}
+          <Text d="inline-block" py={4} fontWeight="800" letterSpacing="-2px">
+            devooks
+          </Text>
         </Text>
         <Formik
           initialValues={initialValues}
@@ -32,7 +40,7 @@ const SignIn: React.FC<Props> = () => {
           {props => (
             <Form
               noValidate={true}
-              style={{ width: 'clamp(60vw, 560px, 70vw)' }}
+              style={{ width: 'clamp(30vw, 460px, 50vw)' }}
             >
               <SignInField name="email" />
               <SignInField name="password" />
