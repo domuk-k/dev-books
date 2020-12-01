@@ -6,6 +6,9 @@ const customTheme = extendTheme({
   styles: {
     global: props => ({
       body: {},
+      h1: {
+        fontSize: '1.8rem',
+      },
     }),
   },
   colors: {
