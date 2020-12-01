@@ -1,14 +1,21 @@
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  SimpleGrid,
+  Text,
+} from '@chakra-ui/react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import BookBoard from '../components/organism/BookBoard';
 
 interface Props {}
 
-const Home: React.FC<Props> = props => {
+const Home: React.FC<Props> = () => {
   return (
     <>
-      <h1>Home</h1>
-      <Link to="/signin">signin</Link>
-      <Link to="/add">add</Link>
+      <BookBoard />
+      <footer></footer>
     </>
   );
 };
