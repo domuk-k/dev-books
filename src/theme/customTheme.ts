@@ -5,13 +5,16 @@ import { mode } from '@chakra-ui/theme-tools';
 const customTheme = extendTheme({
   styles: {
     global: props => ({
-      body: {},
+      body: {
+        color: mode('#333', 'white')(props),
+      },
       h1: {
         fontSize: '1.8rem',
       },
       ul: {
         listStyle: 'none',
       },
+      h2: {},
     }),
   },
   colors: {
@@ -25,7 +28,6 @@ const customTheme = extendTheme({
     },
   },
   config: {
-    useSystemColorMode: true,
     initialColorMode: 'dark',
   },
 });

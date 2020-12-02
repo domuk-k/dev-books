@@ -9,16 +9,17 @@ import {
 import React from 'react';
 import BookBoard from '../components/organism/BookBoard';
 import SideBar from '../components/module/SideBar';
+import Layout from '../Layout';
 
 interface Props {}
 
 const Home: React.FC<Props> = () => {
   return (
     <>
-      <Grid templateColumns="90px auto" gap={6}>
+      <Layout>
         <SideBar />
         <BookBoard />
-      </Grid>
+      </Layout>
       <footer></footer>
     </>
   );
