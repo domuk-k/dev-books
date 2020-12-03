@@ -7,7 +7,7 @@ const Layout: React.FC<Props> = props => {
   return (
     <Grid
       templateColumns="90px auto"
-      gap={6}
+      gap={3}
       width={[
         '100%', // 0-30em
         '100%', // 30em-48em
