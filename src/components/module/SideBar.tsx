@@ -3,12 +3,8 @@ import {
   Box,
   Button,
   Center,
-  chakra,
-  color,
   Flex,
   IconButton,
-  LinkBox,
-  LinkOverlay,
   Popover,
   PopoverArrow,
   PopoverContent,
@@ -18,14 +14,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import {
-  FaBell,
-  FaBookmark,
-  FaHashtag,
-  FaHome,
-  FaPlus,
-  FaSearch,
-} from 'react-icons/fa';
+import { FaBookmark, FaHashtag, FaHome, FaPlus } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router-dom';
 import { ColorModeSwitcher } from '../atom/ColorModeSwitcher';
 import Logo from '../atom/Logo';
@@ -33,7 +22,7 @@ import Logo from '../atom/Logo';
 interface Props {}
 
 const SiderBar: React.FC<Props> = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { onToggle } = useDisclosure();
   const { colorMode } = useColorMode();
   return (
     <Center
@@ -97,17 +86,19 @@ const SiderBar: React.FC<Props> = () => {
         </VStack>
         <VStack spacing="2rem">
           <ColorModeSwitcher />
-          <Popover placement="top-start">
-            <PopoverTrigger>
-              <Avatar onClick={onToggle} bg="purple.900" />
-            </PopoverTrigger>
-            <PopoverContent>
-              <Button>
-                <Link to="/signin">logout</Link>
-              </Button>
-              <PopoverArrow />
-            </PopoverContent>
-          </Popover>
+          <Box>
+            <Popover placement="top-start">
+              <PopoverTrigger>
+                <Avatar onClick={onToggle} bg="purple.900" />
+              </PopoverTrigger>
+              <PopoverContent>
+                <Button as={Link} to="/signin">
+                  logout
+                </Button>
+                <PopoverArrow />
+              </PopoverContent>
+            </Popover>
+          </Box>
         </VStack>
       </Flex>
     </Center>

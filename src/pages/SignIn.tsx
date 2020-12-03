@@ -6,8 +6,9 @@ import {
   Center,
   Box,
   VStack,
+  useColorMode,
 } from '@chakra-ui/react';
-import { Form, Formik, FormikValues } from 'formik';
+import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../components/atom/Logo';
@@ -17,13 +18,21 @@ interface Props {}
 
 const SignIn: React.FC<Props> = () => {
   const initialValues: FormikValues = { email: '', password: '' };
+  const { colorMode } = useColorMode();
   return (
     <Center py={40}>
-      <Box bg="gray.700" m="auto" rounded="16px" px={2} py={12}>
+      <Box
+        bg={colorMode === 'light' ? 'gray.50' : 'gray.700'}
+        m="auto"
+        rounded="16px"
+        px={2}
+        py={12}
+        boxShadow="lg"
+      >
         <Container centerContent={true}>
           <Logo fontSize="90px" />
           <Text as="h1" mt={4}>
-            Wilkommen zu{' '}
+            Wilkommen zu
             <Text d="inline-block" py={4} fontWeight="800" letterSpacing="-2px">
               devooks
             </Text>
@@ -38,7 +47,7 @@ const SignIn: React.FC<Props> = () => {
               }, 1000);
             }}
           >
-            {props => (
+            {(props: FormikProps<FormikValues>) => (
               <Form
                 noValidate={true}
                 style={{ width: 'clamp(30vw, 460px, 50vw)' }}
