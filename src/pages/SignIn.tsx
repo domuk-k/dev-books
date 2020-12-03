@@ -32,7 +32,7 @@ const SignIn: React.FC<Props> = () => {
         <Container centerContent={true}>
           <Logo fontSize="90px" />
           <Text as="h1" mt={4}>
-            Wilkommen zu{' '}
+            Wilkommen zu
             <Text d="inline-block" py={4} fontWeight="800" letterSpacing="-2px">
               devooks
             </Text>

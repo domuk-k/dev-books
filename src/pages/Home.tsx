@@ -1,11 +1,3 @@
-import {
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react';
 import React from 'react';
 import BookBoard from '../components/organism/BookBoard';
 import SideBar from '../components/module/SideBar';

@@ -20,10 +20,7 @@ const AddField: React.FC<Props> = ({ name }) => {
             isInvalid={(form.errors[name] && form.touched[name]) as boolean}
             isRequired={name === 'title' || name === 'author'}
           >
-            <FormLabel htmlFor={name}>
-              {name === 'date' ? 'target date' : name}
-            </FormLabel>
-
+            <FormLabel htmlFor={name}>{name}</FormLabel>
             <Input
               {...field}
               id={name}

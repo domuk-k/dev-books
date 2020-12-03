@@ -3,11 +3,13 @@ import {
   Button,
   Center,
   FormLabel,
+  Input,
   Textarea,
   VStack,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import React from 'react';
+import { DateInput } from '../components/atom/DateInput';
+import React, { useState } from 'react';
 import AddField from '../components/module/AddField';
 import SideBar from '../components/module/SideBar';
 import Layout from '../Layout';
@@ -29,6 +31,7 @@ const Add: React.FC<Props> = props => {
     imageAlt: '',
     description: '',
   };
+
   return (
     <Layout>
       <SideBar />
@@ -42,8 +45,8 @@ const Add: React.FC<Props> = props => {
           <Center w="100%">
             <Box
               width={[
-                '90%', // 0-30em
-                '70%', // 30em-48em
+                '95%', // 0-30em
+                '85%', // 30em-48em
                 '360px', // 48em-62em
                 '360px', // 62em+
               ]}
@@ -52,7 +55,7 @@ const Add: React.FC<Props> = props => {
                 <VStack>
                   <AddField name="title" />
                   <AddField name="author" />
-                  <AddField name="date" />
+                  <DateInput />
                   <Box w="100%">
                     <FormLabel>description</FormLabel>
                     <Textarea />
