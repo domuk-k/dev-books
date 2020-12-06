@@ -1,0 +1,18 @@
+.react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: 'LL Circular Web', 'Helvetica Neue', 'Helvetica', 'Arial', 'Noto',
+    'Apple Gothic', 'MalgunGothic', sans-serif;
+  font-size: 0.8rem;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #aeaeae;
+  border-radius: 0.3rem;
+  display: inline-block;
+  position: relative;
+}
