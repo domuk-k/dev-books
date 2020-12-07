@@ -1,31 +1,54 @@
 import express, { NextFunction, Request, Response } from 'express';
-import faker from 'faker';
+import DB from '../utils/db';
 
 const router = express.Router();
 
 // READ ALL
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.json(Array.from({ length: 7 }, faker.helpers.userCard));
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await DB.read({});
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    next();
+  }
 });
 
-// READ ONE
-router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-  res.json(`this is api getOne`);
-});
+// READ USER'S BOOKLIST
 
 // CREATE ONE
-router.post('/:id', (req: Request, res: Response, next: NextFunction) => {
-  res.json(`this is api post`);
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await DB.create(req.body);
+    res.json(data);
+  } catch (error) {
+    res.json({ error });
+    next();
+  }
 });
 
 // UPDATE ONE
-router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
-  res.json(`this is api patch`);
+router.patch('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await DB.update(req.body);
+    res.json(data);
+  } catch (error) {
+    res.json({ error });
+    next();
+  }
 });
 
 // DELETE ONE
-router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
-  res.json(`this is api delete`);
-});
+router.delete(
+  '/:id',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.json(await DB.delete(req.params.id));
+    } catch (error) {
+      res.json({ error: new Error(error) });
+      next();
+    }
+  }
+);
 
 export default router;
