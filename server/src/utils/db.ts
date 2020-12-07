@@ -1,22 +1,22 @@
 import * as mongoose from 'mongoose';
-import { BookModel, BookDocument } from '../model/Book';
 
-class DB {
-  public static async read(
-    query: object
-  ): Promise<mongoose.Query<BookDocument[], BookDocument>> {
-    return await BookModel.find(query);
+class DB<T extends mongoose.Document> {
+  constructor(public model: typeof mongoose.Model) {}
+
+  public async read(query: object): Promise<mongoose.Query<T[], T>> {
+    return await this.model.find(query);
   }
-  public static async create(document: BookDocument): Promise<BookDocument> {
-    return await BookModel.create(document);
+
+  public async create(document: T): Promise<T> {
+    return await this.model.create(document);
   }
-  public static async update(
-    document: BookDocument
-  ): Promise<mongoose.UpdateQuery<BookDocument>> {
-    return await BookModel.updateOne({ _id: document._id }, { ...document });
+
+  public async update(document: T): Promise<mongoose.UpdateQuery<T>> {
+    return await this.model.updateOne({ _id: document._id }, { ...document });
   }
-  public static async delete(_id: string): Promise<void> {
-    await BookModel.remove({ _id }, err => {
+
+  public async delete(_id: string): Promise<void> {
+    await this.model.remove({ _id }, err => {
       console.error(err);
     });
   }

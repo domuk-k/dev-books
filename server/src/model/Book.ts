@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import { UserModel } from './User';
 
 export interface BookDocument extends mongoose.Document {
   title: string;
   authur: string;
-  _id?: string;
+  owner: object;
   isOpen?: boolean;
   imgURL?: string;
   imgAlt?: string;
@@ -14,16 +15,16 @@ const BookSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     author: { type: String, required: true },
-    // userId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: User
-    // },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: UserModel,
+    },
     isOpen: { type: Boolean, default: true },
     imgURL: { type: String, default: null },
     imgAlt: { type: String, default: null },
     description: { type: String },
   },
-  { timestamps: true, collection: 'books' }
+  { timestamps: true, collection: 'books', versionKey: false }
 );
 
 export const BookModel = mongoose.model<BookDocument>('Book', BookSchema);
