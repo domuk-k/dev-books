@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run watch\" \"npm run dev\"",
-    "dev": "nodemon ./dist/index.js",
+    "dev": "nodemon ./dist/index.js --delay 2",
     "watch": "tsc -w"
   },
   "keywords": [],
