@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { UserModel } from './User';
+import UserModel from './User';
 
 export interface BookDocument extends mongoose.Document {
   title: string;

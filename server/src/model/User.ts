@@ -1,10 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose, { CallbackError } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { json } from 'express';
-
-const saltRounds = 123;
+import { UserClass } from '../utils/UserClass';
 
 export interface UserDocument extends mongoose.Document {
+  comparePassword: (
+    plainPassword: string,
+    cb: (e: CallbackError, b?: boolean | undefined) => void
+  ) => void;
+  generateToken: (
+    cb: (e: CallbackError, doc?: UserDocument | undefined) => void
+  ) => void;
   email: string;
   password: string;
   username?: string;
@@ -35,12 +40,12 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.pre<UserDocument>('save', function (next) {
   const user = this;
+
   if (user.isModified('password')) {
     console.log('password changed');
     try {
       const salt = bcrypt.genSaltSync();
       const hash = bcrypt.hashSync(user.password, salt);
-      console.log(hash);
       user.password = hash;
       next(null);
     } catch (error) {
@@ -48,7 +53,10 @@ UserSchema.pre<UserDocument>('save', function (next) {
     }
   } else {
     console.log('password hasnt been modified');
+    next(null);
   }
 });
 
-export const UserModel = mongoose.model<UserDocument>('User', UserSchema);
+UserSchema.loadClass(UserClass);
+
+export default mongoose.model<UserDocument>('User', UserSchema);

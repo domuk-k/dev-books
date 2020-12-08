@@ -1,75 +1,90 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { UserModel, UserDocument } from '../model/User';
+import auth from '../middlewares/auth';
+import UserModel, { UserDocument } from '../model/User';
 import DB from '../utils/db';
+import { UserClass } from '../utils/UserClass';
 
 const router = express.Router();
 const db = new DB<UserDocument>(UserModel);
 
-// READ ALL
-router.get('/', async (req, res: Response, next: NextFunction) => {
-  try {
-    const users = await UserModel.find()
-      .populate({ path: 'marked_books', populate: 'owner' })
-      .populate({ path: 'done_books', populate: 'owner' });
-    res.status(200).json(users);
-  } catch (error) {
-    console.error(error);
-    next();
-  }
+const TOKEN_EXP_DAY = 7;
+const A_DAY_TO_MILLISECONDS = 1000 * 60 * 60 * 24;
+const tokenMaxAge = A_DAY_TO_MILLISECONDS * TOKEN_EXP_DAY;
+
+// Authentificate User
+router.post('/', auth, async (req: any, res) => {
+  const user = await db.read({ _id: req.user._id });
+
+  res.status(200).json({
+    user,
+    isAuth: true,
+  });
 });
 
-// GET SINGLE User
-router.get('/:user_id', async (req, res, next) => {
+router.post(
+  '/emails',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await db.readOne({ email: req.body.email });
+
+      if (!user) {
+        return res.json({
+          result: false,
+          message: 'Auth failed, email not found',
+        });
+      }
+      res.json({
+        result: true,
+        message: 'email found',
+        username: user.username,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/login', async (req, res, next) => {
   try {
-    const user = await UserModel.findOne({ _id: req.params.user_id })
-      .populate({ path: 'marked_books', populate: 'owner' })
-      .populate({ path: 'done_books', populate: 'owner' });
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    res.json(user);
+    const user = await db.readOne({ email: req.body.email });
+
+    if (!user)
+      return res.json({
+        loginResult: false,
+        message: 'Auth failed, no user not found',
+      });
+
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (!isMatch)
+        return res.json({
+          loginResult: false,
+          message: 'Wrong password',
+        });
+
+      user.generateToken((err, user) => {
+        if (err) return res.status(400).send(err);
+
+        res.cookie('devooks-auth', user?.token, {
+          maxAge: tokenMaxAge,
+          httpOnly: false,
+          //   sameSite: process.env.NODE_ENV === 'production' ? 'lax' : undefined,
+          //   domain:
+          //     process.env.NODE_ENV === 'production' ? 'devooks.io' : undefined,
+          //   secure: process.env.NODE_ENV === 'production' ? true : undefined,
+        });
+        res.status(200).json({
+          loginResult: true,
+          user,
+        });
+      });
+    });
   } catch (error) {
-    res.status(500).json({ error });
     next(error);
   }
 });
 
-// CREATE ONE : Sign Up
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = new UserModel(req.body);
-    await user.save();
-    res.json({ success: true, user });
-  } catch (error) {
-    res.json({
-      success: false,
-      error,
-      msg: error.code === 11000 ? 'duplicated key' : 'search the code',
-    });
-    next();
-  }
+router.post('/logout', auth, async (req: any, res: Response) => {
+  return await db.update({ token: '', ...req.user });
 });
-
-// UPDATE ONE
-router.patch('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await db.update(req.body);
-    res.json(data);
-  } catch (error) {
-    res.json({ error });
-    next();
-  }
-});
-
-// DELETE ONE
-router.delete(
-  '/:id',
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json(await db.delete(req.params.id));
-    } catch (error) {
-      res.json({ error: new Error(error) });
-      next();
-    }
-  }
-);
 
 export default router;
