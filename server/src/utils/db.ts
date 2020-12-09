@@ -6,6 +6,9 @@ class DB<T extends mongoose.Document> {
   public async read(query: object): Promise<mongoose.Query<T[], T>> {
     return await this.model.find(query);
   }
+  public async readOne(query: object): Promise<mongoose.Query<T, T>> {
+    return await this.model.findOne(query);
+  }
 
   public async create(document: T): Promise<T> {
     return await this.model.create(document);
