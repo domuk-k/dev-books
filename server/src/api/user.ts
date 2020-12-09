@@ -11,7 +11,7 @@ router.get('/', async (req, res: Response, next: NextFunction) => {
     const users = await UserModel.find()
       .populate({ path: 'marked_books', populate: 'owner' })
       .populate({ path: 'done_books', populate: 'owner' });
-    res.status(200).json(users);
+    res.json(users);
   } catch (error) {
     console.error(error);
     next();

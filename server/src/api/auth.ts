@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { CallbackError, QueryOptions } from 'mongoose';
 import auth from '../middlewares/auth';
 import UserModel, { UserDocument } from '../model/User';
 import DB from '../utils/db';
-import { UserClass } from '../utils/UserClass';
 
 const router = express.Router();
 const db = new DB<UserDocument>(UserModel);
@@ -15,7 +15,7 @@ const tokenMaxAge = A_DAY_TO_MILLISECONDS * TOKEN_EXP_DAY;
 router.post('/', auth, async (req: any, res) => {
   const user = await db.read({ _id: req.user._id });
 
-  res.status(200).json({
+  res.json({
     user,
     isAuth: true,
   });
@@ -72,7 +72,7 @@ router.post('/login', async (req, res, next) => {
           //     process.env.NODE_ENV === 'production' ? 'devooks.io' : undefined,
           //   secure: process.env.NODE_ENV === 'production' ? true : undefined,
         });
-        res.status(200).json({
+        res.json({
           loginResult: true,
           user,
         });
@@ -84,7 +84,19 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/logout', auth, async (req: any, res: Response) => {
-  return await db.update({ token: '', ...req.user });
+  UserModel.findOneAndUpdate(
+    { _id: req.user._id },
+    { token: '' },
+    {},
+    (err, _) => {
+      if (err) return res.json({ success: false, err });
+
+      return res.send({
+        success: true,
+        err: null,
+      });
+    }
+  );
 });
 
 export default router;

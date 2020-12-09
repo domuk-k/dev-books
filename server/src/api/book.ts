@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { BookModel, BookDocument } from '../model/Book';
+import BookModel, { BookDocument } from '../model/Book';
 import DB from '../utils/db';
 
 const router = express.Router();
@@ -9,7 +9,7 @@ const db = new DB<BookDocument>(BookModel);
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await db.read({});
-    res.status(200).json(data);
+    res.json(data);
   } catch (error) {
     console.error(error);
     next();

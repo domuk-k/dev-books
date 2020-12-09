@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { UserClass } from '../utils/UserClass';
 
 const auth = (req: any, res: Response, next: NextFunction) => {
