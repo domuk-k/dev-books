@@ -42,7 +42,6 @@ UserSchema.pre<UserDocument>('save', function (next) {
   const user = this;
 
   if (user.isModified('password')) {
-    console.log('password changed');
     try {
       const salt = bcrypt.genSaltSync();
       const hash = bcrypt.hashSync(user.password, salt);
@@ -52,7 +51,6 @@ UserSchema.pre<UserDocument>('save', function (next) {
       next(error);
     }
   } else {
-    console.log('password hasnt been modified');
     next(null);
   }
 });

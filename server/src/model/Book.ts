@@ -27,4 +27,4 @@ const BookSchema = new mongoose.Schema(
   { timestamps: true, collection: 'books', versionKey: false }
 );
 
-export const BookModel = mongoose.model<BookDocument>('Book', BookSchema);
+export default mongoose.model<BookDocument>('Book', BookSchema);
