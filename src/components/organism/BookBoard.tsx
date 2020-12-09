@@ -1,20 +1,10 @@
-import {
-  Badge,
-  Box,
-  Container,
-  Flex,
-  Image,
-  List,
-  ListItem,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react';
-import React, { ReactElement } from 'react';
+import { Badge, Box, Flex, Image, Text } from '@chakra-ui/react';
+import React from 'react';
 import BookCard from '../atom/BookCard';
 
 interface Props {}
 
-const BookBoard: React.FC<Props> = props => {
+const BookBoard: React.FC<Props> = () => {
   const book = {
     id: Math.floor(Math.random() * 100),
     title: '프로그래밍 타입스크립트',
