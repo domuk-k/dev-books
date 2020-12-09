@@ -7,20 +7,24 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import customTheme from './theme/customTheme';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 const App: React.FC = () => {
   return (
-    <ErrorBoundary FallbackComponent={ErrorPage}>
-      <ChakraProvider resetCSS={true} theme={customTheme}>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/add" component={Add} />
-            <Route path="/signin" component={SignIn} />
-            <Route path="/" component={Home} />
-          </Switch>
-        </BrowserRouter>
-      </ChakraProvider>
-    </ErrorBoundary>
+    <Provider store={store}>
+      <ErrorBoundary FallbackComponent={ErrorPage}>
+        <ChakraProvider resetCSS={true} theme={customTheme}>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/add" component={Add} />
+              <Route path="/signin" component={SignIn} />
+              <Route path="/" component={Home} />
+            </Switch>
+          </BrowserRouter>
+        </ChakraProvider>
+      </ErrorBoundary>
+    </Provider>
   );
 };
 
