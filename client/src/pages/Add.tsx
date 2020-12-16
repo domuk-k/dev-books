@@ -3,13 +3,12 @@ import {
   Button,
   Center,
   FormLabel,
-  Input,
   Textarea,
   VStack,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { DateInput } from '../components/atom/DateInput';
-import React, { useState } from 'react';
+import React from 'react';
 import AddField from '../components/module/AddField';
 import SideBar from '../components/module/SideBar';
 import Layout from '../Layout';
@@ -23,7 +22,7 @@ interface IinitialValue {
   imageAlt: string;
   description: string;
 }
-const Add: React.FC<Props> = props => {
+const Add: React.FC<Props> = () => {
   const initialValue: IinitialValue = {
     title: '',
     author: '',
@@ -41,7 +40,7 @@ const Add: React.FC<Props> = props => {
           console.dir(values);
         }}
       >
-        {({ errors, touched, values }) => (
+        {props => (
           <Center w="100%">
             <Box
               width={[

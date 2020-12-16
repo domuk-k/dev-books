@@ -15,7 +15,7 @@ const db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', () => console.log('MongoDB Connection open'));
 
-mongoose.connect('mongodb://127.0.0.1/books', {
+mongoose.connect('mongodb://127.0.0.1/devbook', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

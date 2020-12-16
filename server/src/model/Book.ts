@@ -17,7 +17,8 @@ const BookSchema = new mongoose.Schema(
     author: { type: String, required: true },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: UserModel,
+      ref: 'User',
+      required: true,
     },
     isOpen: { type: Boolean, default: true },
     imgURL: { type: String, default: null },
