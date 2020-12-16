@@ -3,8 +3,21 @@
 // action creators
 // reducer
 
-import { GET_BOOKS, ADD_BOOK, UPDATE_BOOK, DELETE_BOOK } from './actions';
-import { BookActionTypes, BookState, GetBooksAction } from './types';
+import {
+  ADD_BOOK_SUCCESS,
+  FAIL,
+  GET_BOOKS_SUCCESS,
+  START,
+  UPDATE_BOOK_SUCCESS,
+  DELETE_BOOK_SUCCESS,
+} from './actions';
+import {
+  AddBookSuccess,
+  BookActionTypes,
+  BookState,
+  Fail,
+  GetBooksSuccess,
+} from './types';
 
 const initialState: BookState = {
   loading: false,
@@ -14,16 +27,23 @@ const initialState: BookState = {
 
 export default (state = initialState, action: BookActionTypes): BookState => {
   switch (action.type) {
-    case GET_BOOKS:
+    case START:
       return {
         ...state,
-        books: (action as GetBooksAction).payload,
+        loading: true,
       };
-    case ADD_BOOK:
+    case FAIL:
+      return {
+        ...state,
+        error: (action as Fail).payload.error ?? new Error(),
+      };
+    case GET_BOOKS_SUCCESS:
+      return { ...state, books: (action as GetBooksSuccess).payload };
+    case ADD_BOOK_SUCCESS:
+      return { ...state, books: (action as AddBookSuccess).payload };
+    case UPDATE_BOOK_SUCCESS:
       return state;
-    case UPDATE_BOOK:
-      return state;
-    case DELETE_BOOK:
+    case DELETE_BOOK_SUCCESS:
       return state;
     default:
       return state;

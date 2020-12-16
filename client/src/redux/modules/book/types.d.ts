@@ -1,3 +1,5 @@
+import { ADD_BOOK_SUCCESS, FAIL, GET_BOOKS_SUCCESS, START } from './actions';
+
 // Book Level State
 export interface BookState {
   loading: boolean;
@@ -17,27 +19,35 @@ export interface BookInfo {
 }
 
 // actions object type
-interface GetBooksAction extends Action {
-  type: typeof GET_BOOKS;
+interface Start extends Action {
+  type: typeof START;
+}
+
+interface Fail extends Action {
+  type: typeof FAIL;
+  payload?: error;
+}
+
+interface GetBooksSuccess extends Action {
+  type: typeof GET_BOOKS_SUCCESS;
   payload: BookInfo[];
 }
-interface AddBookAction extends Action {
-  type: typeof ADD_BOOK;
+interface AddBookSuccess extends Action {
+  type: typeof ADD_BOOK_SUCCESS;
+  payload: BookInfo[];
+}
+interface UpdateBookSuccess extends Action {
+  type: typeof UPDATE_BOOK;
   payload: BookInfo;
 }
-interface UpdateBookAction extends Action {
-  type: typeof UPDATE_BOOK;
-  payload: Partial<BookInfo>;
-}
-interface DeleteBookAction extends Action {
+interface DeleteBookSuccess extends Action {
   type: typeof DELETE_BOOK;
-  payload: {
-    _id: string;
-  };
 }
 
 export type BookActionTypes =
-  | AddBookAction
-  | UpdateBookAction
-  | GetBooksAction
-  | DeleteBookAction;
+  | Start
+  | Fail
+  | GetBooksSuccess
+  | AddBookSuccess
+  | UpdateBookSuccess
+  | DeleteBookSuccess;

@@ -7,6 +7,6 @@ import { History } from 'history';
 const rootReducer = (history: History<unknown>) =>
   combineReducers({ book: bookReducer, router: connectRouter(history) });
 
-export type CombinedState = ReturnType<typeof rootReducer>;
+export type CombinedState = ReturnType<ReturnType<typeof rootReducer>>;
 
 export default rootReducer;
