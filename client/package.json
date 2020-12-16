@@ -1,7 +1,15 @@
 {
-  "name": "dev-books",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.6",
+    "@types/react-router-redux": "^5.0.18",
+    "eslint-config-prettier": "^6.15.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.2",
+    "prettier": "^2.2.1"
+  },
   "dependencies": {
     "@chakra-ui/react": "^1.0.1",
     "@emotion/react": "^11.1.1",
@@ -15,6 +23,9 @@
     "@types/react": "^16.14.2",
     "@types/react-datepicker": "^3.1.2",
     "@types/react-dom": "^16.9.10",
+    "@types/react-redux": "^7.1.11",
+    "axios": "^0.21.0",
+    "connected-react-router": "^6.8.0",
     "formik": "^2.2.5",
     "framer-motion": "^2.9.4",
     "react": "^17.0.1",
@@ -22,8 +33,12 @@
     "react-dom": "^17.0.1",
     "react-error-boundary": "^3.0.2",
     "react-icons": "^4.1.0",
+    "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-saga": "^1.1.3",
     "typescript": "^4.1.2",
     "web-vitals": "^0.2.4"
   },
@@ -36,19 +51,7 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "prettier"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "react-app/jest"
     ]
   },
   "browserslist": {
@@ -62,12 +65,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/react-router-dom": "^5.1.6",
-    "eslint-config-prettier": "^6.15.0",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.5.2",
-    "prettier": "^2.2.1"
   }
 }

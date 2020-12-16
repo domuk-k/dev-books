@@ -5,18 +5,16 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { Field, FieldProps } from 'formik';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './dateInput.css';
 
-interface Props {}
-
-export const DateInput = (props: Props) => {
+export const DateInput: React.FC = () => {
   const [startDate, setStartDate] = useState(new Date());
   return (
     <Field name="date">
-      {({ field, form }: FieldProps) => (
+      {({ form }: FieldProps) => (
         <FormControl
           isInvalid={(form.errors.date && form.touched.date) as boolean}
         >
