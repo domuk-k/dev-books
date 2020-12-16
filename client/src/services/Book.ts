@@ -1,24 +1,33 @@
 import { BookInfo } from '../redux/modules/book/types';
 import axios from 'axios';
 
-axios.defaults.baseURL = '/api/v1';
+axios.defaults.baseURL = 'http://localhost:5000/api/v1/book';
 
 class BookService {
-  public static async get(): BookInfo[] {
-    const data = await axios({
+  public static async get(): Promise<BookInfo[]> {
+    const { data } = await axios({
       method: 'GET',
-      url: '/books',
+    });
+    return data;
+  }
+  public static async add(): Promise<BookInfo> {
+    const { data } = await axios({
+      method: 'POST',
+    });
+    return data;
+  }
+  public static async update(bookId: string): Promise<object> {
+    const { data } = await axios({
+      method: 'PATCH',
+      url: `/${bookId}`,
+    });
+    return data;
+  }
+  public static async remove(): Promise<void> {
+    await axios({
+      method: 'DELETE',
     });
   }
-  // public static add(): BookInfo[] {
-  //   return {}
-  // }
-  // public static update(): BookInfo[] {
-  //   return {}
-  // }
-  // public static remove(): BookInfo[] {
-  //   return {}
-  // }
 }
 
 export default BookService;
