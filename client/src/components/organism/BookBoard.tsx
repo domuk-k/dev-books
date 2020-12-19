@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
-import { BookInfo } from '../../redux/modules/book/types';
+import { BookInfo } from '../../app/modules/book/types';
 import BookCard from '../atom/BookCard';
 
 interface Props {

@@ -42,7 +42,7 @@ const SignIn: React.FC<Props> = () => {
             initialValues={initialValues}
             onSubmit={(values, actions) => {
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+                console.log(JSON.stringify(values, null, 2));
                 actions.setSubmitting(false);
               }, 1000);
             }}

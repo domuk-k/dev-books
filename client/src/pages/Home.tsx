@@ -3,12 +3,12 @@ import BookBoard from '../components/organism/BookBoard';
 import SideBar from '../components/module/SideBar';
 import Layout from '../Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { startGetBooks } from '../redux/modules/book/saga/saga';
-import { CombinedState } from '../redux/modules';
+import { startGetBooks } from '../app/modules/book/saga/saga';
+import { CombinedState } from '../app/modules';
 
 interface Props {}
 
-const Home: React.FC<Props> = props => {
+const Home: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const books = useSelector((state: CombinedState) => state.book.books);
 
