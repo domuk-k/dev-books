@@ -10,6 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   useColorMode,
+  useColorModeValue,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -18,67 +19,35 @@ import { FaBookmark, FaHashtag, FaHome, FaPlus } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router-dom';
 import { ColorModeSwitcher } from '../atom/ColorModeSwitcher';
 import Logo from '../atom/Logo';
+import NavButton from '../atom/NavButton';
 
 interface Props {}
 
 const SiderBar: React.FC<Props> = () => {
   const { onToggle } = useDisclosure();
   const { colorMode } = useColorMode();
+
   return (
     <Center
       as="header"
       h="100vh"
       py={8}
       borderRight="1px solid"
-      borderColor={colorMode === 'dark' ? 'background.100' : 'background.light'}
+      borderColor={useColorModeValue('background.100', 'background.light')}
     >
       <Flex direction="column" align="center" justify="center" h="100%">
         <VStack as="nav" spacing="2rem" flexGrow={1}>
           <Logo fontSize="2rem" />
-          <IconButton
-            as={NavLink}
-            to="/home"
-            _activeLink={{ color: 'brand' }}
-            aria-label="book marks"
-            _hover={{ bg: 'brandAlpha', color: 'brand' }}
-            _active={{ bg: 'brandAlpha', color: 'brand' }}
-            isRound={true}
-            variant="ghost"
-            h="48px"
-            w="48px"
-            fontSize="2xl"
-          >
+          <NavButton toURL="home">
             <FaHome />
-          </IconButton>
-          <IconButton
-            as={NavLink}
-            to="/explore"
-            _activeLink={{ color: 'brand' }}
-            aria-label="book marks"
-            _hover={{ bg: 'brandAlpha', color: 'brand' }}
-            _active={{ bg: 'brandAlpha', color: 'brand' }}
-            isRound={true}
-            variant="ghost"
-            h="48px"
-            w="48px"
-            fontSize="2xl"
-          >
+          </NavButton>
+          <NavButton toURL="browse">
             <FaHashtag />
-          </IconButton>
-          <IconButton
-            as={NavLink}
-            to="/bookmarks"
-            aria-label="book marks"
-            _hover={{ bg: 'brandAlpha', color: 'brand' }}
-            _active={{ bg: 'brandAlpha', color: 'brand' }}
-            _activeLink={{ color: 'brand' }}
-            isRound={true}
-            variant="ghost"
-            h="48px"
-            w="48px"
-            fontSize="2xl"
-            icon={<FaBookmark />}
-          ></IconButton>
+          </NavButton>
+          <NavButton toURL="saved">
+            <FaBookmark />
+          </NavButton>
+
           <Link to="/add">
             <IconButton icon={<FaPlus />} aria-label="add a book to list" />
             {/* <Button>Add New Book</Button> */}

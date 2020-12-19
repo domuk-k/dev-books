@@ -1,8 +1,9 @@
-import { GetBooksSuccess, AddBookSuccess } from '../book/types';
 import {
   AUTH_FAIL,
   AUTH_START,
   AUTH_SUCCESS,
+  EMAIL_CHECK_START,
+  EMAIL_CHECK_FAIL,
   EMAIL_CHECK_SUCCESS,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
@@ -11,9 +12,10 @@ import { AuthActionTypes, AuthState } from './types';
 
 const initialState: AuthState = {
   loading: false,
-  auth: null,
+  checkingEmail: false,
+  user: null,
   error: null,
-  emailChecked: false,
+  emailChecked: null,
 };
 
 export default (state = initialState, action: AuthActionTypes): AuthState => {
@@ -27,15 +29,20 @@ export default (state = initialState, action: AuthActionTypes): AuthState => {
       return {
         ...state,
         error: action.payload,
+        loading: false,
       };
     case AUTH_SUCCESS:
-      return { ...state, auth: action.payload };
+      return { ...state, user: action.payload, loading: false };
+    case EMAIL_CHECK_START:
+      return { ...state, checkingEmail: true };
     case EMAIL_CHECK_SUCCESS:
-      return { ...state, emailChecked: action.payload };
+      return { ...state, emailChecked: true, checkingEmail: false };
+    case EMAIL_CHECK_FAIL:
+      return { ...state, emailChecked: false };
     case LOGIN_SUCCESS:
-      return { ...state, auth: action.payload };
+      return { ...state, user: action.payload };
     case LOGOUT_SUCCESS:
-      return { ...state, auth: null };
+      return { ...state, user: null };
     default:
       return state;
   }

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const Logo: React.FC<React.SVGProps<SVGSVGElement> & ChakraProps> = props => {
   const { colorMode } = useColorMode();
   return (
-    <Link to="/home">
-      <VisuallyHidden>데브북스</VisuallyHidden>
+    <Link to="/">
+      <VisuallyHidden as="h1">데브북스</VisuallyHidden>
       <svg
         width="1em"
         height="1em"

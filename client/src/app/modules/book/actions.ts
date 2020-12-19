@@ -28,19 +28,19 @@ export const fail: BookActionCreator = error => {
 export const getBooksSuccess: BookActionCreator = (books: BookInfo[]) => {
   return {
     type: GET_BOOKS_SUCCESS,
-    payload: { books },
+    payload: books,
   };
 };
 export const addBooksSuccess: BookActionCreator = (books: BookInfo[]) => {
   return {
     type: ADD_BOOK_SUCCESS,
-    payload: { books },
+    payload: books,
   };
 };
 export const updateBooksSuccess: BookActionCreator = (book: BookInfo) => {
   return {
     type: UPDATE_BOOK_SUCCESS,
-    payload: { book },
+    payload: book,
   };
 };
 export const deleteBooksSuccess: BookActionCreator = () => {

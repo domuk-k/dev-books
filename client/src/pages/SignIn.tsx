@@ -6,73 +6,101 @@ import {
   Center,
   Box,
   VStack,
+  FormControl,
   useColorMode,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { CombinedState } from '../app/modules';
+import { startEmailCheck, startLogin } from '../app/modules/auth/saga/saga';
+import { AuthState } from '../app/modules/auth/types';
 import Logo from '../components/atom/Logo';
 import SignInField from '../components/module/SignInField';
 
 interface Props {}
 
 const SignIn: React.FC<Props> = () => {
-  const initialValues: FormikValues = { email: '', password: '' };
+  const dispatch = useDispatch();
   const { colorMode } = useColorMode();
+  const [isSmallerThanMobile] = useMediaQuery('(max-width: 500px)');
+
+  const { user, emailChecked, checkingEmail } = useSelector<
+    CombinedState,
+    Partial<AuthState>
+  >(state => state.auth);
+
+  const initialValues: FormikValues = { email: '', password: '' };
+
+  if (user !== null) return <Redirect to="/" />;
   return (
-    <Center py={40}>
+    <Center h="100vh">
       <Box
-        bg={colorMode === 'light' ? 'gray.50' : 'gray.700'}
+        bg={
+          isSmallerThanMobile
+            ? 'transparent'
+            : colorMode === 'light'
+            ? 'gray.50'
+            : 'gray.700'
+        }
         m="auto"
         rounded="16px"
         px={2}
         py={12}
-        boxShadow="lg"
+        boxShadow={isSmallerThanMobile ? 'unset' : 'lg'}
       >
         <Container centerContent={true}>
-          <Logo fontSize="90px" />
-          <Text as="h1" mt={4}>
-            Wilkommen zu
-            <Text d="inline-block" py={4} fontWeight="800" letterSpacing="-2px">
-              devooks
+          <VStack>
+            <Logo fontSize="90px" />
+            <Text as="h1" mt={4} textAlign="center">
+              <Text d="inline-block" fontWeight="800" letterSpacing="-2px">
+                devooks
+              </Text>
+              <Text
+                textTransform="uppercase"
+                fontSize=".4em"
+                color="gray.500"
+                mt="-5px"
+                mb="8px"
+              >
+                Read as you are
+              </Text>
             </Text>
-          </Text>
+          </VStack>
 
           <Formik
             initialValues={initialValues}
             onSubmit={(values, actions) => {
-              setTimeout(() => {
-                console.log(JSON.stringify(values, null, 2));
-                actions.setSubmitting(false);
-              }, 1000);
+              emailChecked
+                ? dispatch(startLogin(values))
+                : dispatch(startEmailCheck(values));
             }}
           >
             {(props: FormikProps<FormikValues>) => (
-              <Form
-                noValidate={true}
-                style={{ width: 'clamp(30vw, 460px, 50vw)' }}
-              >
+              <Box as={Form} w="100%" maxW="260px" noValidate={true}>
                 <VStack>
                   <SignInField name="email" />
-                  <SignInField name="password" />
+                  {emailChecked === true && <SignInField name="password" />}
+                  {emailChecked === false && <Redirect to="/signUp" />}
                 </VStack>
                 <Button
-                  mt={6}
+                  mt={4}
                   w="100%"
-                  bg="brand"
-                  isLoading={props.isSubmitting}
+                  bg={colorMode === 'light' ? 'brandLight' : 'brandDark'}
+                  isLoading={!!checkingEmail}
                   type="submit"
+                  color="currentcolor"
                 >
                   Log in
                 </Button>
-              </Form>
+              </Box>
             )}
           </Formik>
 
           <HStack spacing="2" mt="5">
-            <Link to="/">forgot password?</Link>
-            <Box> &bull;</Box>
-            <Link to="/">Sign up for devBooks</Link>
+            <Link to="/signUp">Sign up for devBooks</Link>
           </HStack>
         </Container>
       </Box>

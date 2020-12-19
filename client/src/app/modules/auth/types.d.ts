@@ -3,9 +3,10 @@ import { AUTH_FAIL, AUTH_START } from './actions';
 // Auth Level State
 export interface AuthState {
   loading: boolean;
-  auth: AuthInfo | null;
+  user: AuthInfo | null;
   error: null | Error;
-  emailChecked?: boolean;
+  emailChecked: boolean | null;
+  checkingEmail: boolean | null;
 }
 
 // User Entities
