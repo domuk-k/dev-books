@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import BookService from '../../../../services/Book';
+import service from '../../../../services';
 import {
   addBooksSuccess,
   deleteBooksSuccess,
@@ -38,7 +38,7 @@ export const startDeleteBook = (payload: Partial<BookInfo>) => ({
 function* startGetBooksSaga() {
   try {
     yield put(start());
-    const books = yield call(BookService.get);
+    const books = yield call(service.book.get);
     yield put(getBooksSuccess(books));
   } catch (error) {
     yield put(fail(error));
@@ -48,7 +48,7 @@ function* startGetBooksSaga() {
 function* startAddBooksSaga() {
   try {
     yield put(start());
-    const book = yield call(BookService.add);
+    const book = yield call(service.book.add);
     yield put(addBooksSuccess(book));
   } catch (error) {
     yield put(fail(error));
@@ -58,7 +58,7 @@ function* startAddBooksSaga() {
 function* startUpdateBooksSaga() {
   try {
     yield put(start());
-    const books = yield call(BookService.get);
+    const books = yield call(service.book.get);
     yield put(updateBooksSuccess(books));
   } catch (error) {
     yield put(fail(error));
@@ -67,7 +67,7 @@ function* startUpdateBooksSaga() {
 
 function* startDeleteBooksSaga() {
   try {
-    yield call(BookService.remove);
+    yield call(service.book.remove);
     yield put(deleteBooksSuccess());
   } catch (error) {
     yield put(fail());

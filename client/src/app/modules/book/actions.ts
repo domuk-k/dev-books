@@ -21,7 +21,7 @@ export const start: BookActionCreator = () => {
 export const fail: BookActionCreator = error => {
   return {
     type: FAIL,
-    payload: error,
+    payload: { error },
   };
 };
 

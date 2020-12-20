@@ -1,10 +1,18 @@
-import { ADD_BOOK_SUCCESS, FAIL, GET_BOOKS_SUCCESS, START } from './actions';
+import { Action } from 'redux';
+import {
+  ADD_BOOK_SUCCESS,
+  DELETE_BOOK_SUCCESS,
+  FAIL,
+  GET_BOOKS_SUCCESS,
+  START,
+  UPDATE_BOOK_SUCCESS,
+} from './actions';
 
 // Book Level State
 export interface BookState {
   loading: boolean;
   books: BookInfo[];
-  error: null;
+  error: null | Error;
 }
 // Book Entities
 export interface BookInfo {
@@ -25,7 +33,7 @@ interface Start extends Action {
 
 interface Fail extends Action {
   type: typeof FAIL;
-  payload?: error;
+  payload: null | Error;
 }
 
 interface GetBooksSuccess extends Action {
@@ -37,11 +45,11 @@ interface AddBookSuccess extends Action {
   payload: BookInfo[];
 }
 interface UpdateBookSuccess extends Action {
-  type: typeof UPDATE_BOOK;
+  type: typeof UPDATE_BOOK_SUCCESS;
   payload: BookInfo;
 }
 interface DeleteBookSuccess extends Action {
-  type: typeof DELETE_BOOK;
+  type: typeof DELETE_BOOK_SUCCESS;
 }
 
 export type BookActionTypes =

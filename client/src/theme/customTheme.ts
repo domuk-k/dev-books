@@ -18,7 +18,8 @@ const customTheme = extendTheme({
     }),
   },
   colors: {
-    brand: 'rgb(121, 75, 196)',
+    brandLight: '#b197fc',
+    brandDark: '#7950f2',
     brandAlpha: 'rgba(121, 75, 196,.3)',
     background: {
       light: 'rgb(235, 238, 240)',
