@@ -6,12 +6,14 @@ const fetchUser = axios.create({
 });
 
 const userService = {
-  async auth(): Promise<AuthInfo> {
+  async auth(token: string): Promise<AuthInfo> {
     const { data } = await fetchUser({
       method: 'POST',
+      data: { token },
     });
     return data;
   },
+
   async login(payload: Partial<AuthInfo>): Promise<AuthInfo> {
     const { data } = await fetchUser({
       method: 'POST',
@@ -21,16 +23,22 @@ const userService = {
 
     return data;
   },
-  async logout(): Promise<void> {
-    throw new Error('not implemented yet');
+  async logout(payload: object): Promise<void> {
+    const { data } = await fetchUser({
+      method: 'POST',
+      url: '/logout',
+      data: payload,
+    });
+
+    return data;
   },
   async checkEmail(payload: Partial<AuthInfo>): Promise<object> {
     const res = await fetchUser({
       method: 'POST',
       url: '/emails',
       data: payload,
+      timeout: 800,
     });
-    console.log(res);
 
     return res;
   },
