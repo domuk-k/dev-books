@@ -5,8 +5,7 @@ export interface AuthState {
   loading: boolean;
   user: AuthInfo | null;
   error: null | Error;
-  emailChecked: boolean | null;
-  checkingEmail: boolean | null;
+  emailCheck: string;
 }
 
 // User Entities
