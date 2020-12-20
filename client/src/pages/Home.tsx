@@ -3,25 +3,30 @@ import BookBoard from '../components/organism/BookBoard';
 import SideBar from '../components/module/SideBar';
 import Layout from '../Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { startGetBooks } from '../redux/modules/book/saga/saga';
-import { CombinedState } from '../redux/modules';
+import { startGetBooks } from '../app/modules/book/saga/saga';
+import { CombinedState } from '../app/modules';
+import { Redirect } from 'react-router-dom';
+import { AuthInfo } from '../app/modules/auth/types';
+import { useColorModeValue } from '@chakra-ui/react';
+import { startAuth } from '../app/modules/auth/saga/saga';
 
 interface Props {}
 
-const Home: React.FC<Props> = props => {
+const Home: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const books = useSelector((state: CombinedState) => state.book.books);
+  const user = useSelector<CombinedState, AuthInfo | null>(
+    state => state.auth.user
+  );
 
   useEffect(() => {
-    dispatch(startGetBooks());
+    dispatch(startAuth());
   }, [dispatch]);
 
-  // return user ?? <Redirect to='/signin'/>;
   return (
     <>
       <Layout>
-        <SideBar />
-        <BookBoard books={books} />
+        <SideBar user={user} />
+        <BookBoard />
       </Layout>
     </>
   );

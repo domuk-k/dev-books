@@ -1,6 +1,6 @@
 import { Box, ChakraProps, Flex, useColorMode } from '@chakra-ui/react';
 import React from 'react';
-import { BookInfo } from '../../redux/modules/book/types';
+import { BookInfo } from '../../app/modules/book/types';
 
 interface Props {
   book: BookInfo;

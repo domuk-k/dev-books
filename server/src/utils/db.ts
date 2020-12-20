@@ -6,6 +6,7 @@ class DB<T extends mongoose.Document> {
   public async read(query: object): Promise<mongoose.Query<T[], T>> {
     return await this.model.find(query).populate('owner');
   }
+
   public async readOne(query: object): Promise<mongoose.Query<T, T>> {
     return await this.model.findOne(query).populate('owner');
   }

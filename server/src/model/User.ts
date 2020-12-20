@@ -3,13 +3,8 @@ import bcrypt from 'bcrypt';
 import { UserClass } from '../utils/UserClass';
 
 export interface UserDocument extends mongoose.Document {
-  comparePassword: (
-    plainPassword: string,
-    cb: (e: CallbackError, b?: boolean | undefined) => void
-  ) => void;
-  generateToken: (
-    cb: (e: CallbackError, doc?: UserDocument | undefined) => void
-  ) => void;
+  comparePassword(password: any, fn: any): void;
+  generateToken(fn: (e: unknown, user: unknown) => unknown): unknown;
   email: string;
   password: string;
   username?: string;

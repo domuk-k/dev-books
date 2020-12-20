@@ -3,11 +3,13 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
+  VisuallyHidden,
+  ChakraProps,
 } from '@chakra-ui/react';
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 
-interface Props {
+interface Props extends ChakraProps {
   name: string;
 }
 
@@ -18,7 +20,9 @@ const SignInField: React.FC<Props> = ({ name }) => {
         <FormControl
           isInvalid={(form.errors[name] && form.touched[name]) as boolean}
         >
-          <FormLabel htmlFor={name}>{name}</FormLabel>
+          <FormLabel htmlFor={name}>
+            <VisuallyHidden>{name}</VisuallyHidden>
+          </FormLabel>
           <Input
             {...field}
             id={name}

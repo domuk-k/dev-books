@@ -1,8 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
-// actions
-// action creators
-// reducer
-
 import {
   ADD_BOOK_SUCCESS,
   FAIL,
@@ -12,10 +7,10 @@ import {
   DELETE_BOOK_SUCCESS,
 } from './actions';
 import {
-  AddBookSuccess,
-  BookActionTypes,
   BookState,
+  BookActionTypes,
   Fail,
+  AddBookSuccess,
   GetBooksSuccess,
 } from './types';
 
@@ -35,7 +30,7 @@ export default (state = initialState, action: BookActionTypes): BookState => {
     case FAIL:
       return {
         ...state,
-        error: (action as Fail).payload.error ?? new Error(),
+        error: (action as Fail).payload,
       };
     case GET_BOOKS_SUCCESS:
       return { ...state, books: (action as GetBooksSuccess).payload };
