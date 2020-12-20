@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { CallbackError, QueryOptions } from 'mongoose';
 import auth from '../middlewares/auth';
 import UserModel, { UserDocument } from '../model/User';
 import DB from '../utils/db';
@@ -12,9 +11,13 @@ const A_DAY_TO_MILLISECONDS = 1000 * 60 * 60 * 24;
 const tokenMaxAge = A_DAY_TO_MILLISECONDS * TOKEN_EXP_DAY;
 
 // Authentificate User
-router.post('/', auth, async (req: any, res) => {
-  const user = await db.read({ _id: req.user._id });
-
+router.post('/', async (req: any, res) => {
+  const user = await db.readOne({ token: req.body.token });
+  if (!user)
+    res.json({
+      user: null,
+      isAuth: false,
+    });
   res.json({
     user,
     isAuth: true,
@@ -54,24 +57,26 @@ router.post('/login', async (req, res, next) => {
         message: 'Auth failed, no user not found',
       });
 
-    user.comparePassword(req.body.password, (err, isMatch) => {
+    user.comparePassword(req.body.password, (err: any, isMatch: any) => {
       if (!isMatch)
         return res.json({
           loginResult: false,
           message: 'Wrong password',
         });
 
-      user.generateToken((err, user) => {
+      user.generateToken((err, user: any) => {
         if (err) return res.status(400).send(err);
 
-        res.cookie('devooks-auth', user?.token, {
+        res.cookie('devooks-auth', user.token, {
           maxAge: tokenMaxAge,
           httpOnly: false,
+          sameSite: 'none',
           //   sameSite: process.env.NODE_ENV === 'production' ? 'lax' : undefined,
           //   domain:
           //     process.env.NODE_ENV === 'production' ? 'devooks.io' : undefined,
           //   secure: process.env.NODE_ENV === 'production' ? true : undefined,
         });
+
         res.json({
           loginResult: true,
           user,
@@ -83,9 +88,9 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.post('/logout', auth, async (req: any, res: Response) => {
+router.post('/logout', async (req: any, res: Response) => {
   UserModel.findOneAndUpdate(
-    { _id: req.user._id },
+    { _id: req.body._id },
     { token: '' },
     {},
     (err, _) => {
