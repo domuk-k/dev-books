@@ -9,23 +9,29 @@ import {
   PopoverArrow,
   PopoverContent,
   PopoverTrigger,
-  useColorMode,
   useColorModeValue,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaBookmark, FaHashtag, FaHome, FaPlus } from 'react-icons/fa';
-import { Link, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { CombinedState } from '../../app/modules';
+import { logout } from '../../app/modules/auth/actions';
+import { startLogout } from '../../app/modules/auth/saga/saga';
+import { AuthInfo } from '../../app/modules/auth/types';
 import { ColorModeSwitcher } from '../atom/ColorModeSwitcher';
 import Logo from '../atom/Logo';
 import NavButton from '../atom/NavButton';
 
-interface Props {}
+interface Props {
+  user?: AuthInfo | null;
+}
 
-const SiderBar: React.FC<Props> = () => {
+const SiderBar: React.FC<Props> = ({ user }) => {
   const { onToggle } = useDisclosure();
-  const { colorMode } = useColorMode();
+  const dispatch = useDispatch();
 
   return (
     <Center
@@ -37,7 +43,9 @@ const SiderBar: React.FC<Props> = () => {
     >
       <Flex direction="column" align="center" justify="center" h="100%">
         <VStack as="nav" spacing="2rem" flexGrow={1}>
-          <Logo fontSize="2rem" />
+          <NavButton toURL="/">
+            <Logo logoType={1} />
+          </NavButton>
           <NavButton toURL="home">
             <FaHome />
           </NavButton>
@@ -58,10 +66,14 @@ const SiderBar: React.FC<Props> = () => {
           <Box>
             <Popover placement="top-start">
               <PopoverTrigger>
-                <Avatar onClick={onToggle} bg="purple.900" />
+                <Avatar
+                  name={user?.username}
+                  onClick={onToggle}
+                  bg={useColorModeValue('brandLight', 'brandDark')}
+                />
               </PopoverTrigger>
               <PopoverContent>
-                <Button as={Link} to="/signin">
+                <Button onClick={() => dispatch(startLogout(user))}>
                   logout
                 </Button>
                 <PopoverArrow />

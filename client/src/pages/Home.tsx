@@ -8,6 +8,7 @@ import { CombinedState } from '../app/modules';
 import { Redirect } from 'react-router-dom';
 import { AuthInfo } from '../app/modules/auth/types';
 import { useColorModeValue } from '@chakra-ui/react';
+import { startAuth } from '../app/modules/auth/saga/saga';
 
 interface Props {}
 
@@ -18,19 +19,15 @@ const Home: React.FC<Props> = () => {
   );
 
   useEffect(() => {
-    dispatch(startGetBooks());
+    dispatch(startAuth());
   }, [dispatch]);
 
   return (
     <>
-      {user ? (
-        <Layout>
-          <SideBar />
-          <BookBoard />
-        </Layout>
-      ) : (
-        <Redirect to="/signin" />
-      )}
+      <Layout>
+        <SideBar user={user} />
+        <BookBoard />
+      </Layout>
     </>
   );
 };

@@ -6,19 +6,27 @@ import {
   Center,
   Box,
   VStack,
-  FormControl,
   useColorMode,
   useMediaQuery,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { CombinedState } from '../app/modules';
-import { startEmailCheck, startLogin } from '../app/modules/auth/saga/saga';
+import { logout } from '../app/modules/auth/actions';
+import { emailCheckState } from '../app/modules/auth/reducer';
+import {
+  startEmailCheck,
+  startLogin,
+  startLogout,
+} from '../app/modules/auth/saga/saga';
 import { AuthState } from '../app/modules/auth/types';
 import Logo from '../components/atom/Logo';
+import SignInErrorMessage from '../components/atom/SigninErrorMessage';
 import SignInField from '../components/module/SignInField';
+import authInfoSchema from '../utils/authInfoSchema';
 
 interface Props {}
 
@@ -27,81 +35,85 @@ const SignIn: React.FC<Props> = () => {
   const { colorMode } = useColorMode();
   const [isSmallerThanMobile] = useMediaQuery('(max-width: 500px)');
 
-  const { user, emailChecked, checkingEmail } = useSelector<
+  const { loading, user, emailCheck, error } = useSelector<
     CombinedState,
     Partial<AuthState>
   >(state => state.auth);
 
   const initialValues: FormikValues = { email: '', password: '' };
 
+  const modeValue = useColorModeValue('gray.50', 'gray.700');
   if (user !== null) return <Redirect to="/" />;
   return (
     <Center h="100vh">
       <Box
-        bg={
-          isSmallerThanMobile
-            ? 'transparent'
-            : colorMode === 'light'
-            ? 'gray.50'
-            : 'gray.700'
-        }
+        bg={isSmallerThanMobile ? 'transparent' : modeValue}
         m="auto"
         rounded="16px"
-        px={2}
         py={12}
         boxShadow={isSmallerThanMobile ? 'unset' : 'lg'}
+        w="100%"
+        maxW="500px"
       >
-        <Container centerContent={true}>
-          <VStack>
-            <Logo fontSize="90px" />
-            <Text as="h1" mt={4} textAlign="center">
-              <Text d="inline-block" fontWeight="800" letterSpacing="-2px">
-                devooks
-              </Text>
+        <Container centerContent={true} w="100%">
+          <VStack spacing="20px" w="360px">
+            <Box as="header" textAlign="center">
+              <Logo logoType={0} />
               <Text
+                fontSize="1.2rem"
+                mt="-2.5"
                 textTransform="uppercase"
-                fontSize=".4em"
                 color="gray.500"
-                mt="-5px"
-                mb="8px"
               >
                 Read as you are
               </Text>
-            </Text>
+            </Box>
+
+            <Formik
+              initialValues={initialValues}
+              validationSchema={
+                authInfoSchema[
+                  emailCheck === emailCheckState.SUCCESS
+                    ? 'signIn'
+                    : 'mailCheck'
+                ]
+              }
+              onSubmit={(values, actions) => {
+                emailCheck === emailCheckState.SUCCESS
+                  ? dispatch(startLogin(values))
+                  : dispatch(startEmailCheck(values));
+              }}
+            >
+              {(props: FormikProps<FormikValues>) => (
+                <Box as={Form} w="100%" noValidate={true}>
+                  <VStack>
+                    <SignInField name="email" />
+                    {emailCheck === emailCheckState.SUCCESS && (
+                      <SignInField name="password" />
+                    )}
+                  </VStack>
+                  <Button
+                    mt={4}
+                    w="100%"
+                    bg={colorMode === 'light' ? 'brandLight' : 'brandDark'}
+                    isLoading={
+                      emailCheck === emailCheckState.LOADING || loading
+                    }
+                    type="submit"
+                    color="currentcolor"
+                  >
+                    Log in
+                  </Button>
+                  <SignInErrorMessage
+                    fontSize="1em"
+                    emailCheck={emailCheck}
+                    error={error}
+                  />
+                </Box>
+              )}
+            </Formik>
+            <Box>Sign up for devBooks</Box>
           </VStack>
-
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              emailChecked
-                ? dispatch(startLogin(values))
-                : dispatch(startEmailCheck(values));
-            }}
-          >
-            {(props: FormikProps<FormikValues>) => (
-              <Box as={Form} w="100%" maxW="260px" noValidate={true}>
-                <VStack>
-                  <SignInField name="email" />
-                  {emailChecked === true && <SignInField name="password" />}
-                  {emailChecked === false && <Redirect to="/signUp" />}
-                </VStack>
-                <Button
-                  mt={4}
-                  w="100%"
-                  bg={colorMode === 'light' ? 'brandLight' : 'brandDark'}
-                  isLoading={!!checkingEmail}
-                  type="submit"
-                  color="currentcolor"
-                >
-                  Log in
-                </Button>
-              </Box>
-            )}
-          </Formik>
-
-          <HStack spacing="2" mt="5">
-            <Link to="/signUp">Sign up for devBooks</Link>
-          </HStack>
         </Container>
       </Box>
     </Center>
