@@ -19,6 +19,7 @@ const Logo: React.FC<Props> = ({ logoType, ...props }) => {
         fontSize={logoType ? '2rem' : '3rem'}
         fontFamily="'Space Mono', monospace"
         fontStyle={logoType ? 'unset' : 'italic'}
+        textAlign="center"
         fontWeight="700"
         w="100%"
         letterSpacing="-2px"

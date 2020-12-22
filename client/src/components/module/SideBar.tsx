@@ -39,7 +39,7 @@ const SiderBar: React.FC<Props> = ({ user }) => {
       h="100vh"
       py={8}
       borderRight="1px solid"
-      borderColor={useColorModeValue('background.100', 'background.light')}
+      borderColor={useColorModeValue('borderLight', 'borderDark')}
     >
       <Flex direction="column" align="center" justify="center" h="100%">
         <VStack as="nav" spacing="2rem" flexGrow={1}>
