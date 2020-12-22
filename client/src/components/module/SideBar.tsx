@@ -25,62 +25,65 @@ import { ColorModeSwitcher } from '../atom/ColorModeSwitcher';
 import Logo from '../atom/Logo';
 import NavButton from '../atom/NavButton';
 
-interface Props {
-  user?: AuthInfo | null;
-}
+interface Props {}
 
-const SiderBar: React.FC<Props> = ({ user }) => {
+const SiderBar: React.FC<Props> = () => {
   const { onToggle } = useDisclosure();
   const dispatch = useDispatch();
+  const user = useSelector<CombinedState, AuthInfo | null>(
+    state => state.auth.user
+  );
 
   return (
-    <Center
-      as="header"
-      h="100vh"
-      py={8}
-      borderRight="1px solid"
-      borderColor={useColorModeValue('borderLight', 'borderDark')}
-    >
-      <Flex direction="column" align="center" justify="center" h="100%">
+    <Center as="header" h="100vh" userSelect="none">
+      <Flex
+        direction="column"
+        py={8}
+        px="1rem"
+        pos="fixed"
+        align="center"
+        justify="center"
+        h="100%"
+        borderRight="1px solid"
+        borderColor={useColorModeValue('borderLight', 'borderDark')}
+      >
         <VStack as="nav" spacing="2rem" flexGrow={1}>
           <NavButton toURL="/">
             <Logo logoType={1} />
           </NavButton>
-          <NavButton toURL="home">
+          <NavButton toURL="/my">
             <FaHome />
           </NavButton>
-          <NavButton toURL="browse">
+          <NavButton toURL="/browse">
             <FaHashtag />
           </NavButton>
-          <NavButton toURL="saved">
+          <NavButton toURL="/saved">
             <FaBookmark />
           </NavButton>
 
           <Link to="/add">
             <IconButton icon={<FaPlus />} aria-label="add a book to list" />
-            {/* <Button>Add New Book</Button> */}
           </Link>
         </VStack>
-        <VStack spacing="2rem">
-          <ColorModeSwitcher />
-          <Box>
-            <Popover placement="top-start">
-              <PopoverTrigger>
-                <Avatar
-                  name={user?.username}
-                  onClick={onToggle}
-                  bg={useColorModeValue('brandLight', 'brandDark')}
-                />
-              </PopoverTrigger>
-              <PopoverContent>
-                <Button onClick={() => dispatch(startLogout(user))}>
-                  logout
-                </Button>
-                <PopoverArrow />
-              </PopoverContent>
-            </Popover>
-          </Box>
-        </VStack>
+        <Flex direction="column" justifyContent="center">
+          <ColorModeSwitcher mb="2rem" />
+          <Popover placement="top-start">
+            <PopoverTrigger>
+              <Avatar
+                name={user?.username}
+                onClick={onToggle}
+                bg={useColorModeValue('brandLight', 'brandDark')}
+                userSelect="none"
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <Button onClick={() => dispatch(startLogout(user))}>
+                logout
+              </Button>
+              <PopoverArrow />
+            </PopoverContent>
+          </Popover>
+        </Flex>
       </Flex>
     </Center>
   );

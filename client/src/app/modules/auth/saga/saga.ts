@@ -1,4 +1,4 @@
-import { call, delay, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { AuthInfo } from '../types';
 import {
   START_AUTH,
@@ -40,7 +40,7 @@ export const startLogout = (payload: unknown) => ({
   payload,
 });
 
-function* startAuthSaga(action: ReturnType<typeof startAuth>) {
+function* startAuthSaga() {
   try {
     yield put(authStart());
     const token = yield call(service.storage.get, 'jwt');

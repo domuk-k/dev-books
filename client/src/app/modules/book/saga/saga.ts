@@ -8,7 +8,7 @@ import {
   start,
   updateBooksSuccess,
 } from '../actions';
-import { BookInfo } from '../types';
+import { AddBookSuccess, BookInfo } from '../types';
 import {
   START_GET_BOOK,
   START_ADD_BOOK,
@@ -20,7 +20,7 @@ export const startGetBooks = () => ({
   type: START_GET_BOOK,
 });
 
-export const startAddBook = (payload: BookInfo) => ({
+export const startAddBook = (payload: Partial<BookInfo>) => ({
   type: START_ADD_BOOK,
   payload: payload,
 });
@@ -45,10 +45,12 @@ function* startGetBooksSaga() {
   }
 }
 
-function* startAddBooksSaga() {
+function* startAddBooksSaga(action: AddBookSuccess) {
   try {
     yield put(start());
-    const book = yield call(service.book.add);
+    const { documents } = yield call(service.book.search, action.payload.title);
+    yield (action.payload.imgURL = documents[0].thumbnail);
+    const book = yield call(service.book.add, action.payload);
     yield put(addBooksSuccess(book));
   } catch (error) {
     yield put(fail(error));

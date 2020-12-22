@@ -3,12 +3,15 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Textarea,
 } from '@chakra-ui/react';
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 
+type AddFieldType = 'title' | 'author' | 'date' | 'description';
+
 interface Props {
-  name: 'title' | 'author' | 'date' | 'description';
+  name: AddFieldType;
 }
 
 const AddField: React.FC<Props> = ({ name }) => {
@@ -21,16 +24,19 @@ const AddField: React.FC<Props> = ({ name }) => {
             isRequired={name === 'title' || name === 'author'}
           >
             <FormLabel htmlFor={name}>{name}</FormLabel>
-            <Input
-              {...field}
-              id={name}
-              placeholder={name}
-              type={name}
-              variant="filled"
-              size="lg"
-              focusBorderColor="gray.300"
-            />
-
+            {name === 'description' ? (
+              <Textarea variant="filled" size="lg" rows={5} />
+            ) : (
+              <Input
+                {...field}
+                type={name}
+                id={name}
+                placeholder={name}
+                variant="filled"
+                size="lg"
+                focusBorderColor="gray.300"
+              />
+            )}
             <FormErrorMessage>{form.errors[name]}</FormErrorMessage>
           </FormControl>
         )}

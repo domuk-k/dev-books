@@ -5,7 +5,7 @@ export interface BookDocument extends mongoose.Document {
   title: string;
   authur: string;
   owner: object;
-  isOpen?: boolean;
+  isPrivate?: boolean;
   imgURL?: string;
   imgAlt?: string;
   description?: string;
@@ -20,7 +20,8 @@ const BookSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    isOpen: { type: Boolean, default: true },
+    targetDate: { type: String, default: String },
+    isPrivate: { type: Boolean, default: false },
     imgURL: { type: String, default: null },
     imgAlt: { type: String, default: null },
     description: { type: String },

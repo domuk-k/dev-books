@@ -2,42 +2,53 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
+  Flex,
+  FormControl,
   FormLabel,
+  Input,
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { Form, Formik } from 'formik';
+import { Field, FieldProps, Form, Formik } from 'formik';
 import { DateInput } from '../components/atom/DateInput';
 import React from 'react';
 import AddField from '../components/module/AddField';
 import SideBar from '../components/module/SideBar';
 import Layout from '../Layout';
+import { BookInfo } from '../app/modules/book/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { startAddBook } from '../app/modules/book/saga/saga';
+import { CombinedState } from '../app/modules';
+import { Redirect } from 'react-router-dom';
+import { AuthState } from '../app/modules/auth/types';
 
 interface Props {}
 
-interface IinitialValue {
-  title: string;
-  author: string;
-  imageURL: string;
-  imageAlt: string;
-  description: string;
+class formInitialValue implements Partial<BookInfo> {
+  public title = '';
+  public author = '';
+  public date = new Date();
+  public isPrivate = false;
+  public imageURL = '';
+  public imageAlt = '';
+  public description = '';
 }
-const Add: React.FC<Props> = () => {
-  const initialValue: IinitialValue = {
-    title: '',
-    author: '',
-    imageURL: '',
-    imageAlt: '',
-    description: '',
-  };
 
-  return (
+const Add: React.FC<Props> = () => {
+  const initialValue = new formInitialValue();
+  const dispatch = useDispatch();
+  const { user } = useSelector<CombinedState, Partial<AuthState>>(
+    state => state.auth
+  );
+
+  return user ? (
     <Layout>
       <SideBar />
       <Formik
         initialValues={initialValue}
         onSubmit={values => {
-          console.dir(values);
+          dispatch(startAddBook({ ...values, owner: user?._id }));
         }}
       >
         {props => (
@@ -54,14 +65,35 @@ const Add: React.FC<Props> = () => {
                 <VStack>
                   <AddField name="title" />
                   <AddField name="author" />
-                  <DateInput />
-                  <Box w="100%">
-                    <FormLabel>description</FormLabel>
-                    <Textarea />
-                  </Box>
-                  <Button type="submit" alignSelf="flex-end">
-                    Add
-                  </Button>
+                  <DateInput name="date" />
+
+                  <AddField name="description" />
+                  <Flex direction="row" justifyContent="space-between" w="100%">
+                    <Field>
+                      {({ field }: FieldProps) => (
+                        <FormControl as={Flex} alignContent="center">
+                          <Checkbox
+                            {...field}
+                            name="isPrivate"
+                            id="isPrivate"
+                            mr="3"
+                          />
+                          <FormLabel
+                            htmlFor="isPrivate"
+                            userSelect="none"
+                            m="0"
+                            lineHeight="2.4rem"
+                          >
+                            비밀로 하기
+                          </FormLabel>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Button type="submit" alignSelf="flex-end">
+                      Add
+                    </Button>
+                  </Flex>
                 </VStack>
               </Form>
             </Box>
@@ -69,6 +101,8 @@ const Add: React.FC<Props> = () => {
         )}
       </Formik>
     </Layout>
+  ) : (
+    <Redirect to="/" />
   );
 };
 
