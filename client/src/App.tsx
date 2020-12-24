@@ -11,6 +11,8 @@ import Routes from './pages/Routes';
 const history = createBrowserHistory();
 
 const App: React.FC = () => {
+
+
   return (
     <Provider store={configStore(history)}>
       <>

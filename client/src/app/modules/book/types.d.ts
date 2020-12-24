@@ -11,7 +11,7 @@ import {
 // Book Level State
 export interface BookState {
   loading: boolean;
-  books: BookInfo[];
+  books: Partial<BookInfo>[];
   error: null | Error;
 }
 // Book Entities
@@ -19,8 +19,8 @@ export interface BookInfo {
   _id: string;
   title: string;
   author: string;
-  owner: object;
-  isOpen?: boolean;
+  owner: string;
+  isPrivate?: boolean;
   imgURL?: string;
   imgAlt?: string;
   description?: string;
@@ -42,7 +42,7 @@ interface GetBooksSuccess extends Action {
 }
 interface AddBookSuccess extends Action {
   type: typeof ADD_BOOK_SUCCESS;
-  payload: BookInfo[];
+  payload: Partial<BookInfo>;
 }
 interface UpdateBookSuccess extends Action {
   type: typeof UPDATE_BOOK_SUCCESS;

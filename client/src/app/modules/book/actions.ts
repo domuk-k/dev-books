@@ -31,7 +31,9 @@ export const getBooksSuccess: BookActionCreator = (books: BookInfo[]) => {
     payload: books,
   };
 };
-export const addBooksSuccess: BookActionCreator = (books: BookInfo[]) => {
+export const addBooksSuccess: BookActionCreator = (
+  books: Partial<BookInfo>
+) => {
   return {
     type: ADD_BOOK_SUCCESS,
     payload: books,

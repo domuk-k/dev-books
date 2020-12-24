@@ -14,12 +14,16 @@ const customTheme = extendTheme({
       ul: {
         listStyle: 'none',
       },
-      h2: {},
+      h3: {
+        fontSize: '2rem',
+      },
     }),
   },
   colors: {
     brandLight: '#b197fc',
     brandDark: '#7950f2',
+    borderDark: '#38444D',
+    borderLight: '#EBEEF0',
     brandAlpha: 'rgba(121, 75, 196,.3)',
     background: {
       light: 'rgb(235, 238, 240)',

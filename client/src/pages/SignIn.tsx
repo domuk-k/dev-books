@@ -43,6 +43,7 @@ const SignIn: React.FC<Props> = () => {
   const initialValues: FormikValues = { email: '', password: '' };
 
   const modeValue = useColorModeValue('gray.50', 'gray.700');
+
   if (user !== null) return <Redirect to="/" />;
   return (
     <Center h="100vh">
