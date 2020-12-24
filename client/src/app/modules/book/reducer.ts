@@ -35,7 +35,10 @@ export default (state = initialState, action: BookActionTypes): BookState => {
     case GET_BOOKS_SUCCESS:
       return { ...state, books: (action as GetBooksSuccess).payload };
     case ADD_BOOK_SUCCESS:
-      return { ...state, books: (action as AddBookSuccess).payload };
+      return {
+        ...state,
+        books: [...state.books, (action as AddBookSuccess).payload],
+      };
     case UPDATE_BOOK_SUCCESS:
       return state;
     case DELETE_BOOK_SUCCESS:

@@ -12,9 +12,20 @@ const bookService = {
     });
     return data;
   },
-  async add(): Promise<BookInfo> {
+  async search(query?: string): Promise<object> {
+    const { data } = await axios({
+      method: 'GET',
+      url: `https://dapi.kakao.com/v3/search/book?query=${query}`,
+      headers: {
+        Authorization: `KakaoAK c564052ebc2015f97c74804dc1a47221`,
+      },
+    });
+    return data;
+  },
+  async add(payload: Partial<BookInfo>): Promise<BookInfo> {
     const { data } = await fetchBook({
       method: 'POST',
+      data: payload,
     });
     return data;
   },
